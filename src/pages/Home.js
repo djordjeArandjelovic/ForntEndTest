@@ -15,6 +15,7 @@ import {
 	ModalCloseButton,
 	ModalFooter,
 	Button,
+	useToast,
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -41,6 +42,8 @@ const Home = () => {
 		const savedFavourites = localStorage.getItem("favourites");
 		return savedFavourites ? JSON.parse(savedFavourites) : [];
 	});
+	// TOAST FOR ADD/REMOVE
+	const toast = useToast();
 
 	// HELPER ARRAY
 	let symbolValues = [];
@@ -143,6 +146,14 @@ const Home = () => {
 			const updatedFavourites = [...favourites, symbol];
 			setFavourites(updatedFavourites);
 			localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+			toast({
+				title: "Success.",
+				description: "Added to favourites.",
+				status: "success",
+				position: "top",
+				duration: 2500,
+				isClosable: true,
+			});
 		}
 	};
 
@@ -150,6 +161,14 @@ const Home = () => {
 		const updatedFavourites = favourites.filter((fav) => fav !== symbol);
 		setFavourites(updatedFavourites);
 		localStorage.setItem("favourites", JSON.stringify(updatedFavourites));
+		toast({
+			title: "Success.",
+			description: "Removed to favourites.",
+			status: "error",
+			position: "top",
+			duration: 2500,
+			isClosable: true,
+		});
 	};
 
 	return (
