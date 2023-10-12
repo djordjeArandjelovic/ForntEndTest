@@ -18,8 +18,12 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { authenticationService } from "../_services/authentication.service";
 
 const Home = () => {
+	// USER
+	const isUserAuthenticated = authenticationService.getAuthenticated();
+
 	// TABLE DATA
 	const [tableValues, setTableValues] = useState([]);
 
@@ -226,24 +230,26 @@ const Home = () => {
 							</Table>
 						</TableContainer>
 					</ModalBody>
-					<ModalFooter placeContent={"start"}>
-						<Button
-							colorScheme={
-								favourites?.includes(modalData.symbol) ? "red" : "teal"
-							}
-							children={
-								favourites?.includes(modalData.symbol)
-									? "Remove from Favourites"
-									: "Add to Favourites"
-							}
-							rounded={"none"}
-							onClick={
-								favourites?.includes(modalData.symbol)
-									? () => handleDelete(modalData.symbol)
-									: () => handleFav(modalData.symbol)
-							}
-						/>
-					</ModalFooter>
+					{isUserAuthenticated && (
+						<ModalFooter placeContent={"start"}>
+							<Button
+								colorScheme={
+									favourites?.includes(modalData.symbol) ? "red" : "teal"
+								}
+								children={
+									favourites?.includes(modalData.symbol)
+										? "Remove from Favourites"
+										: "Add to Favourites"
+								}
+								rounded={"none"}
+								onClick={
+									favourites?.includes(modalData.symbol)
+										? () => handleDelete(modalData.symbol)
+										: () => handleFav(modalData.symbol)
+								}
+							/>
+						</ModalFooter>
+					)}
 				</ModalContent>
 			</Modal>
 		</>
